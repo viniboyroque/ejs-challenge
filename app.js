@@ -146,33 +146,57 @@ app.post("/delete", function(req, res) {
 //Params test
 
 app.get ("/posts/:postName", function(req, res) {
-  let postSelect = 
- _.lowerCase(req.params.postName);
+  const postSelect = 
+ req.params.postName;
   
 
-  postArray.forEach(function(post) {
-    const storedTitle = _.lowerCase(post.postTitle)
-
-    if (postSelect === 
-      storedTitle) {
-       res.render("post", {postTitle: post.postTitle, postBody: post.postBody, postId: post._id });
-     };
-  });
-  // for (let i = 0; i < postArray.length; i++) {
-  //   if (postSelect === 
-  //    _.lowerCase(postArray[i].postTitle)) {
-  //     console.log("its a match!");
-  //     res.render("post", {postTitle: postArray[i].postTitle, postBody: postArray[i].postBody});
-  //   } else {
-  //     console.log("not a match!")
-  //     res.redirect("/");
-  //   };
+ Post.findOne({postTitle: postSelect}).then(function (foundPost) {
     
-  // };
+  
+    res.render("post", {postTitle: foundPost.postTitle, postBody: foundPost.postBody, postId: foundPost._id });
+    
+    
+  });
 });
 
-// Run Server
 
+
+
+//Go to Update screen//////////////
+app.get ("/update/:postName", function(req, res) {
+  const updateSelect = 
+ req.params.postName;
+  
+
+ Post.findOne({postTitle: updateSelect}).then(function (foundPost) {
+    
+  
+    res.render("updatePost", {postTitle: foundPost.postTitle, postBody: foundPost.postBody, postId: foundPost._id });
+    
+    
+  });
+});
+
+//Update Post////////////
+
+app.post("/updatePost", function(req, res) {
+  const postId = req.body.postId;
+  const postBody = req.body.postBody;
+  const postTitle = req.body.postTitle;
+ 
+  
+
+  
+    Post.findOneAndUpdate({_id: postId}, {postTitle: postTitle, postBody: postBody}).then(function () {
+      console.log("Successfully saved defult items to DB");
+      res.redirect("/");
+    }).catch(function (err) {
+      console.log(err);
+    });
+  
+  });
+
+  
 app.listen(process.env.PORT || 4000, function(){
   console.log("Server started on port 3000."); console.log("its a match!");
   
@@ -191,6 +215,4 @@ app.listen(process.env.PORT || 4000, function(){
 
 
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
-});
+

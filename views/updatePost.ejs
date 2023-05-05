@@ -1,0 +1,23 @@
+<%- include("partials/header") -%>
+
+<h1>Update Post</h1>
+
+
+<div>
+    <form class="item" action="/updatePost" method="post">
+        <div class="mb-3">
+            <label class="form-label" for="postTitle">Title</label>
+            <input type="text" placeholder="<%= postTitle %>" class="form-control" name="postTitle" >
+        </div>
+        <div class="mb-3">
+            <label for="postBody" class="form-label">Post</label>
+            <textarea class="form-control"  name="postBody"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary publish" name="postId" value="<%= postId %>">Update</button>
+         </div>
+    </form>
+</div>
+
+
+<%- include("partials/footer") -%>
